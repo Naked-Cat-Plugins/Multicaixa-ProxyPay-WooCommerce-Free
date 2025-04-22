@@ -120,7 +120,8 @@ You can report any security bugs found in the source code of this plugin through
 * [DEV] Start implementing some WordPress Coding Standards
 * [DEV] New `order_needs_payment` method to abstract for both payment gateways
 * [DEV] Allow Multicaixa Express (Only available on the PRO add-on) to interact with the main plugin
-* ...
+* [DEV] Requires WordPress 5.8 and WooCommerce 7.1
+* [DEV] Tested with WordPress 6.8 and WooCommerce 9.8.1
 
 = 3.0 - 2024-11-13 =
 * [FIX] Load text domain at the right time to avoid PHP notices on WordPress 6.7 and above

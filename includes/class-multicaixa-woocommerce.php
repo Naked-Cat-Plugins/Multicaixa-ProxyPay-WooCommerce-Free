@@ -46,10 +46,8 @@ final class Multicaixa_WooCommerce {
 		$this->wc_blocks_active    = class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' );
 		$this->out_link_utm        = '?utm_source='.rawurlencode( esc_url( home_url( '/' ) ) ).'&amp;utm_medium=link&amp;utm_campaign=multicaixa_proxypay_plugin';
 		$this->multicaixa_settings = get_option( 'woocommerce_multicaixa_proxypay_settings', '' );
-		if ( version_compare( WC_VERSION, '7.1', '>=' ) ) {
-			if ( wc_get_container()->get( \Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled() ) {
-				$this->hpos_enabled = true;
-			}
+		if ( wc_get_container()->get( \Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled() ) {
+			$this->hpos_enabled = true;
 		}
 		$this->multicaixa_icon_url = plugins_url( 'images/icon_multicaixa_48.svg', MULTICAIXA_PLUGIN_FILE );
 		$this->pro_add_on_active   = function_exists( 'Multicaixa_WooCommerce_Pro' );
