@@ -59,7 +59,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 			$this->banner_svg = plugin_dir_path( __FILE__ ).'../images/banner_multicaixa.svg';
 
 			$this->method_title = __( 'Pagamento por Referência no Multicaixa (ProxyPay)', 'woo-multicaixa' );
-			$this->method_description = __( 'Easy and simple payment using "Pagamento por Referência" at any "Multicaixa" ATM terminal or your Home Banking service. (Only available to customers of Angolan banks.)', 'woo-multicaixa' );
+			$this->method_description = __( 'Easy and simple payment using "Pagamento por Referência" at any "Multicaixa" ATM terminal or your Home Banking service. (Only available to customers of Angolan banks)', 'woo-multicaixa' );
 			$this->api_key = $this->get_option( 'api_key' );
 	
 			//Plugin options and settings
@@ -259,11 +259,11 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 						<?php if ( function_exists('wc_back_link') ) echo wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ); ?>
 					</h2>
 					<?php echo wp_kses_post( wpautop( $this->get_method_description() ) ); ?>
-					<p><strong><?php _e( 'In order to use this plugin you <u>must</u>:', 'woo-multicaixa' ); ?></strong></p>
+					<p><strong><?php esc_html_e( 'In order to use this payment method you must:', 'woo-multicaixa' ); ?></strong></p>
 					<ul class="multicaixa_leftbar_list">
 						<li><?php printf( __( 'Set WooCommerce currency to <strong>Angolan Kwanza</strong> %1$s', 'woo-multicaixa' ), '<a href="admin.php?page=wc-settings&amp;tab=general#woocommerce_currency">&gt;&gt;</a>.' ); ?></li>
 						<li><?php printf( __( 'Sign a contract with a bank and %1$s. To know more about this service, please go to %2$s.', 'woo-multicaixa' ), '<strong><a href="https://proxypay.co.ao/'.esc_attr( Multicaixa_WooCommerce()->out_link_utm ).'" target="_blank">ProxyPay</a></strong>', '<a href="https://proxypay.co.ao/'.esc_attr( Multicaixa_WooCommerce()->out_link_utm ).'" target="_blank">https://proxypay.co.ao/</a>' ); ?></li>
-						<li><?php _e( 'Fill out all the details (Entity and API key) provided by your bank and <strong>ProxyPay</strong> in the fields below.', 'woo-multicaixa' ); ?>
+						<li><?php _e( 'Fill out all the details (Entity and API key) provided by your bank and <strong>ProxyPay</strong> in the fields below.', 'woo-multicaixa' ); ?></li>
 					</ul>
 					<?php
 					if ( ! Multicaixa_WooCommerce()->pro_add_on_active ) {
@@ -272,7 +272,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 							<?php
 							printf(
 								__( 'If you want to get automatic payment notifications, and other functionalities, you need to get the %sPRO add-on%s' , 'woo-multicaixa' ),
-								'<a href="https://ptwooplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/'.esc_attr( Multicaixa_WooCommerce()->out_link_utm ).'" target="_blank">',
+								'<a href="https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/'.esc_attr( Multicaixa_WooCommerce()->out_link_utm ).'" target="_blank">',
 								'</a>'
 							);
 							?>
@@ -299,7 +299,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 						} else {
 							?>
 							<div id="message" class="error">
-								<p><strong><?php _e( 'Set the Entity and API key and Save changes to set other plugin options.', 'woo-multicaixa' ); ?></strong></p>
+								<p><strong><?php _e( 'Set the Entity and API key and Save changes to set ther other payment method options.', 'woo-multicaixa' ); ?></strong></p>
 							</div>
 							<?php
 						}
@@ -331,64 +331,8 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 				</div>
 			</div>
 			<div class="clear"></div>
-			<style type="text/css">
-				#multicaixa_rightbar {
-					display: none;
-				}
-				@media (min-width: 961px) {
-					#multicaixa_leftbar {
-						height: auto;
-						overflow: hidden;
-					}
-					#multicaixa_leftbar_settings {
-						width: auto;
-						overflow: hidden;
-					}
-					#multicaixa_rightbar {
-						display: block;
-						float: right;
-						width: 200px;
-						max-width: 20%;
-						margin-left: 20px;
-						padding: 15px;
-						background-color: #fff;
-					}
-					#multicaixa_rightbar h4:first-child {
-						margin-top: 0px;
-					}
-					#multicaixa_rightbar p {
-					}
-					#multicaixa_rightbar p img {
-						max-width: 100%;
-						height: auto;
-					}
-				}
-				.multicaixa_leftbar_list {
-					list-style-type: disc;
-					list-style-position: inside;
-				}
-				.multicaixa_leftbar_list li {
-					margin-left: 1.5em;
-				}
-				.multicaixa_error {
-					color: #dc3232;
-				}
-				.multicaixa_ok {
-					color: #46b450;
-				}
-				.multicaixa_pro_ad {
-					background-color: #fbe5b3;
-					text-align: center;
-					padding: 0.5em;
-					font-size: 1.2em;
-				}
-				.multicaixa_pro_ad h4,
-				.multicaixa_pro_ad p {
-					margin: 0px;
-					font-weight: bold;
-				}
-			</style>
 			<?php
+			Multicaixa_WooCommerce()->admin_css();
 			do_action( 'multicaixa_proxypay_after_settings' );
 		}
 
@@ -416,7 +360,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 				$order = wc_get_order( $order_id );
 			}
 			if ( $this->id === $order->get_payment_method() ) {
-				if ( $order->has_status( 'on-hold' ) || $order->has_status( 'pending' ) ) {
+				if ( Multicaixa_WooCommerce()->order_needs_payment( $order ) ) {
 					$ref = Multicaixa_WooCommerce()->multicaixa_get_ref( $order_id );
 					if ( is_array( $ref ) ) {
 						echo $this->thankyou_instructions_table_html( $ref['ent'], $ref['ref'], $ref['val'], $ref['end_datetime'], $order_id );
@@ -565,7 +509,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 							}
 						}
 						//On Hold or pending
-						if ( $order->has_status( 'on-hold' ) || $order->has_status( 'pending' ) || $order->has_status( 'partially-paid' ) ) {
+						if ( Multicaixa_WooCommerce()->order_needs_payment( $order ) || $order->has_status( 'partially-paid' ) ) {
 							//if ( Multicaixa_WooCommerce()->wc_deposits_active && $order->get_status() == 'partially-paid' ) {
 								//WooCommerce deposits - No instructions
 							//} else {
@@ -659,7 +603,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 				// Mark as on-hold
 				if ( apply_filters( 'multicaixa_proxypay_set_on_hold', true, $order_id ) ) $order->update_status( 'on-hold', __( 'Awaiting Multicaixa payment.', 'woo-multicaixa' ) );
 				// Run action
-				do_action( 'multicaixa_proxypay_process_payment', $order_id ); //To allow pro plugin do his stuff here, like reducing stock for example
+				do_action( 'multicaixa_proxypay_process_payment', $order_id ); // To allow pro plugin do his stuff here, like reducing stock for example
 				// Remove cart
 				WC()->cart->empty_cart();
 				// Empty awaiting payment session

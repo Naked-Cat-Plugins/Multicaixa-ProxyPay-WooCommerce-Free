@@ -93,7 +93,7 @@ final class Multicaixa_WooCommerce {
 	public function add_settings_link( $links ) {
 		$action_links = array();
 		if ( ! $this->pro_add_on_active ) {
-			$action_links['gopro'] = '<a href="https://ptwooplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/' . esc_attr( $this->out_link_utm ) . '" target="_blank" style="font-weight: bold;">' . __( 'Get the PRO add-on <small>(including automatic payment notifications)</small>', 'woo-multicaixa' ) . '</a>';
+			$action_links['gopro'] = '<a href="https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/' . esc_attr( $this->out_link_utm ) . '" target="_blank" style="font-weight: bold;">' . __( 'Get the PRO add-on <small>(including automatic payment notifications)</small>', 'woo-multicaixa' ) . '</a>';
 		}
 		$action_links['multicaixa_settings'] = '<a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section='.$this->multicaixa_id.'">' . __( 'Multicaixa settings', 'woo-multicaixa' ) . '</a>';
 		return array_merge( $action_links, $links );
@@ -116,12 +116,17 @@ final class Multicaixa_WooCommerce {
 
 	/* Debug / Log - Outside payment gateway class because we might need it even if the gateway is not initiated */
 	public function debug_log( $gateway_id, $message, $level = 'debug', $debug_email = '', $email_message = '' ) {
-		if ( !$this->log ) $this->log = wc_get_logger(); //Init log 
+		if ( ! $this->log ) {
+			$this->log = wc_get_logger(); //Init log
+		}
 		$this->log->$level( $message, array( 'source' => $gateway_id ) );
 		if ( $debug_email ) {
+			if ( empty( $email_message ) ) {
+				$email_message = $message;
+			}
 			wp_mail(
 				trim( $debug_email ),
-				$gateway_id.' - '.$message,
+				$gateway_id . ' - ' . $message,
 				$email_message
 			);
 		}
@@ -199,9 +204,9 @@ final class Multicaixa_WooCommerce {
 				echo '<p><strong>'.__( 'Multicaixa', 'woo-multicaixa' ).'</strong></p>';
 				echo '<p>'.__( 'Entity', 'woo-multicaixa' ).': '.trim( $order_multicaixa_details['ent'] ).'<br/>';
 				echo __( 'Reference', 'woo-multicaixa' ).': '.$this->format_multicaixa_ref( $order_multicaixa_details['ref'] ).'<br/>';
-				echo __( 'Value', 'woo-multicaixa' ).': '.wc_price( $order_multicaixa_details['val'] ).'<br/>';
+				echo __( 'Value', 'woo-multicaixa' ).': '.wc_price( $order_multicaixa_details['val'], array( 'currency' => Multicaixa_WooCommerce()->currency ) ).'<br/>';
 				echo __( 'Validity', 'woo-multicaixa' ).': '.$this->format_multicaixa_validity_date( $order_multicaixa_details['end_datetime'] ).'</p>';
-				if ( $order->has_status( 'on-hold' ) || $order->has_status( 'pending' ) ) {
+				if ( Multicaixa_WooCommerce()->order_needs_payment( $order ) ) {
 					echo '<p>'.__( 'Awaiting Multicaixa payment.', 'woo-multicaixa' ).'</p>';
 					do_action( 'multicaixa_proxypay_metabox_on_hold', $order->get_id() );
 				} else {
@@ -210,6 +215,8 @@ final class Multicaixa_WooCommerce {
 			} else {
 				echo '<p>'.__( 'No details available', 'woo-multicaixa' ).'.</p><p>'.__( 'This must be an error because the payment method of this order is Multicaixa', 'woo-multicaixa' ).'.</p>';
 			}
+		} elseif ( $order->get_payment_method() == 'multicaixa_express_proxypay' ) {
+			do_action( 'multicaixa_proxypay_metabox_express', $order->get_id() );
 		} else {
 			echo '<p>'.__( 'This order does not have Multicaixa as the payment gateway.', 'woo-multicaixa' ).'</p>';
 			echo '<style type="text/css">#'.$this->multicaixa_id.' { display: none; }</style>';//If we have MB data, we should delete it
@@ -263,7 +270,7 @@ final class Multicaixa_WooCommerce {
 							trim( $this->get_multicaixa_setting( 'api_key' ) ) != ''
 						) {
 							$ref = $this->multicaixa_create_ref( $base['ent'], rand( apply_filters( 'multicaixa_create_ref_min', 0 ), apply_filters( 'multicaixa_create_ref_max', 999999999 ) ), $order->get_total() );
-							//ProxyPay API
+							// ProxyPay API
 							$data = apply_filters( 'multicaixa_api_create_ref_data', array(
 								'amount'		=> (string) floatval( $order->get_total() ),
 								'end_datetime'  => (string) Multicaixa_WooCommerce()->get_date_validity_in_iso( $this->ref_validity ),
@@ -354,6 +361,7 @@ final class Multicaixa_WooCommerce {
 				// =
 				case '_'.$this->multicaixa_id.'_ent':
 				case '_'.$this->multicaixa_id.'_ref':
+				case '_multicaixa_express_proxypay_id': // Express by payment ID
 					$query['meta_query'][] = array(
 						'key'   => $key,
 						'value' => esc_attr( $value ), //WHY esc_attr?
@@ -377,6 +385,17 @@ final class Multicaixa_WooCommerce {
 		return $query;
 	}
 
+	/**
+	 * Check if order needs payment
+	 *
+	 * @since 4.0
+	 * @param WC_Order $order The order.
+	 * @return bool
+	 */
+	public function order_needs_payment( $order ) {
+		return $order->needs_payment() || $order->get_status() === 'on-hold' || $order->get_status() === 'pending';
+	}
+
 	/* Maybe translate query args for HPOS  */
 	public function maybe_translate_order_query_args( $args ) {
 		if ( $this->hpos_enabled ) {
@@ -384,6 +403,20 @@ final class Multicaixa_WooCommerce {
 			$args = $this->multicaixa_woocommerce_order_data_store_cpt_get_orders_query( $args, $args, null, true );
 		}
 		return $args;
+	}
+
+	/**
+	 * Get $_SERVER['REMOTE_ADDR'] properly sanitized
+	 *
+	 * @return string
+	 */
+	public function get_remote_addr() {
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		if ( isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) && filter_var( $_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP ) ) {
+			$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP']; 
+		}
+		// phpcs:enable
+		return isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 	}
 
 	/* Set email correct language - Stolen from WCML emails.class.php - Not sure if this is still needed */
@@ -464,7 +497,7 @@ final class Multicaixa_WooCommerce {
 				<div class="multicaixa_pro_ad">
 					<h4><?php _e( 'Want more features <small>including automatic payment notifications</small>?', 'woo-multicaixa' ); ?></h4>
 					<p>
-						<a href="https://ptwooplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/<?php echo esc_attr( $this->out_link_utm); ?>" target="_blank" style="font-weight: bold;">
+						<a href="https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/<?php echo esc_attr( $this->out_link_utm); ?>" target="_blank" style="font-weight: bold;">
 							<?php _e( 'Get the PRO add-on', 'woo-multicaixa' ); ?>
 						</a>
 					</p>
@@ -478,7 +511,7 @@ final class Multicaixa_WooCommerce {
 			<p><a href="https://proxypay.co.ao/<?php echo esc_attr( $this->out_link_utm); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'woo-multicaixa' ), 'ProxyPay' ) ); ?>" target="_blank"><img src="<?php echo plugins_url( '../images/proxypay.svg', __FILE__ ); ?>" width="200"/></a></p>
 			<h4><?php _e( 'Development and premium technical support', 'woo-multicaixa' ); ?>:</h4>
 			<p>
-				<a href="https://ptwooplugins.com<?php echo esc_attr( $this->out_link_utm); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'woo-multicaixa' ), 'PT Woo Plugins' ) ); ?>" target="_blank">
+				<a href="https://nakedcatplugins.com<?php echo esc_attr( $this->out_link_utm); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'woo-multicaixa' ), 'PT Woo Plugins' ) ); ?>" target="_blank">
 					<img src="<?php echo plugins_url( '../images/ptwooplugins.svg', __FILE__ ); ?>" width="200"/>
 				</a>
 			</p>
@@ -494,6 +527,69 @@ final class Multicaixa_WooCommerce {
 			</a>
 			<div class="clear"></div>
 		</div>
+		<?php
+	}
+
+	/* Right sidebar on payment gateway settings - Outside payment gateway class because we might implement other payment methods */
+	public function admin_css() {
+		?>
+		<style type="text/css">
+			#multicaixa_rightbar {
+				display: none;
+			}
+			@media (min-width: 961px) {
+				#multicaixa_leftbar {
+					height: auto;
+					overflow: hidden;
+				}
+				#multicaixa_leftbar_settings {
+					width: auto;
+					overflow: hidden;
+				}
+				#multicaixa_rightbar {
+					display: block;
+					float: right;
+					width: 200px;
+					max-width: 20%;
+					margin-left: 20px;
+					padding: 15px;
+					background-color: #fff;
+				}
+				#multicaixa_rightbar h4:first-child {
+					margin-top: 0px;
+				}
+				#multicaixa_rightbar p {
+				}
+				#multicaixa_rightbar p img {
+					max-width: 100%;
+					height: auto;
+				}
+			}
+			.multicaixa_leftbar_list {
+				list-style-type: disc;
+				list-style-position: inside;
+			}
+			.multicaixa_leftbar_list li {
+				margin-left: 1.5em;
+			}
+			.multicaixa_error {
+				color: #dc3232;
+			}
+			.multicaixa_ok {
+				color: #46b450;
+			}
+			.multicaixa_pro_ad {
+				background-color: #fbe5b3;
+				text-align: center;
+				padding: 0.5em;
+				font-size: 1.2em;
+			}
+			.multicaixa_pro_ad h4,
+			.multicaixa_pro_ad p {
+				margin: 0px;
+				font-weight: bold;
+			}
+		</style>
 		<?php
 	}
 

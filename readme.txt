@@ -1,5 +1,5 @@
 === Payment Multicaixa (ProxyPay gateway) for WooCommerce ===
-Contributors: webdados, ptwooplugins
+Contributors: nakedcatplugins, webdados
 Tags: woocommerce, payment, pagamentos, gateway, multicaixa, angola, multibanco, atm, debit card, credit card, bank, ecommerce, e-commerce, emis, proxypay, webdados, php7, cartão de débito, cartão de crédito, cartões, referência, reference
 Requires at least: 5.4
 Tested up to: 6.7
@@ -27,37 +27,32 @@ This plugin works with the [ProxyPay](https://proxypay.co.ao/) gateway, and a co
 
 = PRO add-on features: =
 
-* Automatically changes the order status to “Processing” (or “Completed” if the order only contains virtual downloadable products) and notifies both the customer and the store owner, if the Webhook upon payment is activated;
-* Automatic Webhook call can be activated upon request to ProxyPay, via the plugin settings screen;
-* Configuration of reference validity in hours, days, weeks or months;
-* Shop owner can set minimum and maximum order totals for this payment gateway to be available;
-* Payment method can be deactivated if the client doesn’t have an Angolan address;
-* Ability to reduce stock when the order is created or paid;
-* Automatically update the payment reference, and notify the client, if the order total is changed on a backend order modification;
-* Allows searching orders (in the admin area) by Multicaixa Reference;
-* Automatic cancellation of orders with expired references;
-* Integration with ProxyPay’s own SMS system;
-* ProxyPay Sandbox support;
-* Other planned PRO features:
-	* Integration for 3rd party SMS notification plugins:
-		* WooCommerce - APG SMS Notifications;
-		* Twilio SMS Notifications;
-		* YITH WooCommerce SMS Notification;
-		* Other providers can be added upon request (under quotation);
-	* WooCommerce Subscriptions integration;
-	* WooCommerce Deposits integration;
+* NEW: Multicaixa Express mobile payment
+	* ...
+* Multicaixa Reference payment
+	* Automatic Webhook call can be activated upon request to ProxyPay, via the plugin settings screen;
+	* Configuration of reference validity in hours, days, weeks or months;
+	* Ability to reduce stock when the order is created or paid;
+	* Automatically update the payment reference, and notify the client, if the order total is changed on a backend order modification;
+	* Allows searching orders (in the admin area) by Multicaixa Reference;
+	* Automatic cancellation of orders with expired references;
+	* Integration with ProxyPay’s own SMS system;
+	* ProxyPay Sandbox support;
+* Automatically changes the order status to “Processing” (or “Completed” if the order only contains virtual downloadable products) and notifies both the customer and the store owner, on both payment gateways;
+* Shop owner can set minimum and maximum order totals for both payment gateways to be available;
+* Payment methods can be deactivated if the client doesn’t have an Angolan address;
 
-[Know more](https://multicaixa-woocommerce.com) or [get the plugin PRO add-on now](https://ptwooplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
+[Know more](https://multicaixa-woocommerce.com) or [get the plugin PRO add-on now](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
 
 = Other (premium) plugins =
 
 Already know our other WooCommerce (premium) plugins?
 
-* [Advanced Coupon Restrictions for WooCommerce](https://ptwooplugins.com/product/advanced-coupon-restrictions-for-woocommerce/) - Create coupons for any Product Taxonomy, User details, and Order destination.
-* [Simple Custom Fields for WooCommerce Blocks Checkout](https://ptwooplugins.com/product/simple-custom-fields-for-woocommerce-blocks-checkout/) - Add custom fields to the new WooCommerce Block-based Checkout
-* [Simple WooCommerce Order Approval](https://ptwooplugins.com/product/simple-woocommerce-order-approval/) - The hassle-free solution for WooCommerce order approval before payment
-* [Shop as Client for WooCommerce](https://ptwooplugins.com/product/shop-as-client-for-woocommerce-pro-add-on/) - Quickly create orders on behalf of your customers
-* [Taxonomy/Term and Role based Discounts for WooCommerce](https://ptwooplugins.com/product/taxonomy-term-and-role-based-discounts-for-woocommerce-pro-add-on/) - Easily create bulk discount rules for products based on any taxonomy terms (built-in or custom)
+* [Advanced Coupon Restrictions for WooCommerce](https://nakedcatplugins.com/product/advanced-coupon-restrictions-for-woocommerce/) - Create coupons for any Product Taxonomy, User details, and Order destination.
+* [Simple Checkout Fields Manager for WooCommerce](https://nakedcatplugins.com/product/simple-custom-fields-for-woocommerce-blocks-checkout/) - Add custom fields and manage (remove, make required or optional) core fields on the new WooCommerce Block-based Checkout
+* [Simple WooCommerce Order Approval](https://nakedcatplugins.com/product/simple-woocommerce-order-approval/) - The hassle-free solution for WooCommerce order approval before payment
+* [Shop as Client for WooCommerce](https://nakedcatplugins.com/product/shop-as-client-for-woocommerce-pro-add-on/) - Quickly create orders on behalf of your customers
+* [Taxonomy/Term and Role based Discounts for WooCommerce](https://nakedcatplugins.com/product/taxonomy-term-and-role-based-discounts-for-woocommerce-pro-add-on/) - Easily create bulk discount rules for products based on any taxonomy terms (built-in or custom)
 
 == Installation ==
 
@@ -105,9 +100,9 @@ You should return true to the `multicaixa_proxypay_test_mode` filter, or use the
 
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/woo-multicaixa) and help us out.
 
-= I need technical support. Who should I contact, ProxyPay or PT Woo Plugins (by Webdados)? =
+= I need technical support. Who should I contact, ProxyPay or Naked Cat Plugins (by Webdados)? =
 
-Development and (premium) support is provided by [PT Woo Plugins (by Webdados)](https://ptwooplugins.com/).
+Development and (premium) support is provided by [Naked Cat Plugins (by Webdados)](https://nakedcatplugins.com/).
 We do not provide free support for this free plugin, but you can submit bug reports here at WordPress.org
 You’ll get included support if you buy the [plugin PRO add-on](https://multicaixa-woocommerce.com).
 For premium support or custom developments, you should contact [Webdados](https://www.webdados.pt/contactos/). Charges may (and most certainly will) apply.
@@ -117,6 +112,15 @@ For premium support or custom developments, you should contact [Webdados](https:
 You can report any security bugs found in the source code of this plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/woo-multicaixa). The Patchstack team will assist you with verification, CVE assignment and take care of notifying the developers of this plugin.
 
 == Changelog ==
+
+= 4.0 -  =
+* [NEW] Multicaixa Express mobile payment (PRO add-on)
+* [NEW] We are now called Naked Cat Plugins 😻
+* [FIX] Make sure the value on the order metabox is shown in Kwanzas and not the shop main currency, if different
+* [DEV] Start implementing some WordPress Coding Standards
+* [DEV] New `order_needs_payment` method to abstract for both payment gateways
+* [DEV] Allow Multicaixa Express (Only available on the PRO add-on) to interact with the main plugin
+* ...
 
 = 3.0 - 2024-11-13 =
 * [FIX] Load text domain at the right time to avoid PHP notices on WordPress 6.7 and above
