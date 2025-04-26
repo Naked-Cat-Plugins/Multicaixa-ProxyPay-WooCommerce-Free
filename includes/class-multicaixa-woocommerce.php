@@ -510,7 +510,7 @@ final class Multicaixa_WooCommerce {
 			<h4><?php _e( 'Development and premium technical support', 'woo-multicaixa' ); ?>:</h4>
 			<p>
 				<a href="https://nakedcatplugins.com<?php echo esc_attr( $this->out_link_utm); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'woo-multicaixa' ), 'PT Woo Plugins' ) ); ?>" target="_blank">
-					<img src="<?php echo plugins_url( '../images/ptwooplugins.svg', __FILE__ ); ?>" width="200"/>
+					<img src="<?php echo plugins_url( '../images/nakedcatplugins-plugins-for-wordpress.svg', __FILE__ ); ?>" width="200"/>
 				</a>
 			</p>
 			<p>

@@ -1,10 +1,12 @@
 === Payment Multicaixa (ProxyPay gateway) for WooCommerce ===
 Contributors: nakedcatplugins, webdados
-Tags: woocommerce, payment, pagamentos, gateway, multicaixa, angola, multibanco, atm, debit card, credit card, bank, ecommerce, e-commerce, emis, proxypay, webdados, php7, cartão de débito, cartão de crédito, cartões, referência, reference
-Requires at least: 5.4
-Tested up to: 6.7
-Requires PHP: 7.0
-Stable tag: 3.0
+Tags: angola, ecommerce, emis, proxypay, mobile
+Requires at least: 5.8
+Tested up to: 6.8
+Requires PHP: 7.2
+Stable tag: 4.0
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 This plugin allows customers with an Angolan bank account to pay WooCommerce orders in Kwanzas using Multicaixa (Pagamentos por Referência), through ProxyPay’s payment gateway.
 
@@ -12,9 +14,11 @@ This plugin allows customers with an Angolan bank account to pay WooCommerce ord
 
 “Pagamento por Referência” (payment by reference) on Multicaixa (Angolan ATM network), or Home Banking services, is one of the most popular and secure ways to pay for services and (online) purchases in Angola.
 
-This plugin will allow you to generate a payment Reference the customer can then use to pay for his WooCommerce order in Kwanzas, through an ATM or Home Banking service.
+This plugin will allow you to generate a payment Reference the customer can use to pay for his WooCommerce order in Kwanzas, through an ATM or Home Banking service.
 
-This plugin works with the [ProxyPay](https://proxypay.co.ao/) gateway, and a contract with an Angolan bank and [TimeBoxed](http://timeboxed.co.ao/) (the company behind ProxyPay) is required. Technical support is provided by [Webdados](https://www.webdados.pt).
+With the PRO add-on, your customers can also pay for orders with their mobile phone number using Multicaixa Express.
+
+This plugin works with the [ProxyPay](https://proxypay.co.ao/) gateway, and a contract with an Angolan bank and [TimeBoxed](http://timeboxed.co.ao/) (the company behind ProxyPay) is required. Technical support is provided by [Naked Cat Plugins](https://nakedcatplugins.com).
 
 = Features: =
 
@@ -27,26 +31,28 @@ This plugin works with the [ProxyPay](https://proxypay.co.ao/) gateway, and a co
 
 = PRO add-on features: =
 
-* NEW: Multicaixa Express mobile payment
-	* ...
-* Multicaixa Reference payment
+* NEW: Multicaixa Express mobile payment:
+	* Accept mobile payments with MCX Express, with the customer’s mobile phone number;
+	* Both for the classic and blocks checkout;
+* Multicaixa Reference payment:
 	* Automatic Webhook call can be activated upon request to ProxyPay, via the plugin settings screen;
-	* Configuration of reference validity in hours, days, weeks or months;
+	* Configuration of reference validity in hours, days, weeks, or months;
 	* Ability to reduce stock when the order is created or paid;
 	* Automatically update the payment reference, and notify the client, if the order total is changed on a backend order modification;
 	* Allows searching orders (in the admin area) by Multicaixa Reference;
 	* Automatic cancellation of orders with expired references;
-	* Integration with ProxyPay’s own SMS system;
+	* Integration with ProxyPay’s SMS system;
+* For both payment methods:
+	* Automatically changes the order status to “Processing” (or “Completed” if the order only contains virtual downloadable products) and notifies both the customer and the store owner;
+	* Shop owner can set minimum and maximum order totals for the payment gateway to be available;
+	* Payment method can be deactivated if the client doesn’t have an Angolan address;
 	* ProxyPay Sandbox support;
-* Automatically changes the order status to “Processing” (or “Completed” if the order only contains virtual downloadable products) and notifies both the customer and the store owner, on both payment gateways;
-* Shop owner can set minimum and maximum order totals for both payment gateways to be available;
-* Payment methods can be deactivated if the client doesn’t have an Angolan address;
 
-[Know more](https://multicaixa-woocommerce.com) or [get the plugin PRO add-on now](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
+[Know more and get the plugin PRO add-on now](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
 
 = Other (premium) plugins =
 
-Already know our other WooCommerce (premium) plugins?
+Do you already know our other WooCommerce (premium) plugins?
 
 * [Advanced Coupon Restrictions for WooCommerce](https://nakedcatplugins.com/product/advanced-coupon-restrictions-for-woocommerce/) - Create coupons for any Product Taxonomy, User details, and Order destination.
 * [Simple Checkout Fields Manager for WooCommerce](https://nakedcatplugins.com/product/simple-custom-fields-for-woocommerce-blocks-checkout/) - Add custom fields and manage (remove, make required or optional) core fields on the new WooCommerce Block-based Checkout
@@ -56,15 +62,20 @@ Already know our other WooCommerce (premium) plugins?
 
 == Installation ==
 
-* Use the included automatic install feature on your WordPress admin panel and search for “Multicaixa WooCommerce”.
-* Go to WooCoomerce > Settings > Payments > Pagamento por Referência no Multicaixa and fill in the details provided by ProxyPay and your bank in order to use this payment method. A contract with TimeBoxed (the company behind ProxyPay) and a bank is mandatory.
+* Use the included automatic install feature on your WordPress admin panel and search for “Multicaixa WooCommerce ProxyPay”.
+* Go to WooCoomerce > Settings > Payments > Pagamento por Referência no Multicaixa and fill in the details provided by ProxyPay and your bank to activate this payment method. A contract with TimeBoxed (the company behind ProxyPay) and a bank is mandatory.
 * Start receiving payments :-)
+* Optionally, [buy and download the PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/) to set up Multicaixa Express payment and get other extended features
 
 == Frequently Asked Questions ==
 
-= Can I start receiving payments right away? Show me the money! =
+= Can I start receiving payments right away? =
 
-Nop! You have to sign a contract with ProxyPay and an Angolan bank in order to activate this service. Go to [https://proxypay.co.ao/](https://proxypay.co.ao/) for more information. They can help you out with all the subscription process with them and the bank.
+No! You have to sign a contract with ProxyPay and an Angolan bank to activate this service. Go to [https://proxypay.co.ao/](https://proxypay.co.ao/) for more information. They can help you out with all the subscription process with them and the bank.
+
+= Can I get Maulticaixa Express mobile payments? =
+
+Yes, with the [PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/)
 
 = [WPML] My website is multilingual. Will I be able to use this plugin? =
 
@@ -76,11 +87,11 @@ Go to WPML > String Translation > Search and translate the `multicaixa_proxypay_
 
 = [SMS] How to include the Multicaixa payment instructions in the SMS sent by “WooCommerce - APG SMS Notifications”, “Twilio SMS Notifications” or “YITH WooCommerce SMS Notification”? =
 
-You’ll need the [plugin PRO add-on](https://multicaixa-woocommerce.com).
+You’ll need the [plugin PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
 
 = [SMS] How to trigger the ProxyPay SMS system? =
 
-You’ll need the [plugin PRO add-on](https://multicaixa-woocommerce.com).
+You’ll need the [plugin PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
 
 = [Advanced] The order is set “On Hold”, can I make it “Pending” by default? =
 
@@ -89,12 +100,12 @@ Be advised that no “new order” email, with payment instructions, will be sen
 
 = [Advanced] Can I prevent the plugin from adding the payment instructions and/or the payment received message to emails? =
 
-You can use the `multicaixa_proxypay_email_instructions_pending_send` filter: return false and the payment instructions won’t be included in the “new order” email – we do not recommend you to do it, though.
+You can use the `multicaixa_proxypay_email_instructions_pending_send` filter: return false and the payment instructions won’t be included in the “new order” email – we do not recommend you do it, though.
 You can use the `multicaixa_proxypay_email_instructions_payment_received_send` filter: return false and the payment received message won’t be included in the “processing” email.
 
 = [Advanced] How can I use the plugin with the ProxyPay sandbox, for tests? =
 
-You should return true to the `multicaixa_proxypay_test_mode` filter, or use the [plugin PRO add-on](https://multicaixa-woocommerce.com) to activate the test mode with a simple checkbox.
+You should return true to the `multicaixa_proxypay_test_mode` filter, or use the [plugin PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/) to activate the test mode with a simple checkbox.
 
 = Can I contribute with a translation? =
 
@@ -104,7 +115,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/woo-
 
 Development and (premium) support is provided by [Naked Cat Plugins (by Webdados)](https://nakedcatplugins.com/).
 We do not provide free support for this free plugin, but you can submit bug reports here at WordPress.org
-You’ll get included support if you buy the [plugin PRO add-on](https://multicaixa-woocommerce.com).
+You’ll get included support if you buy the [plugin PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
 For premium support or custom developments, you should contact [Webdados](https://www.webdados.pt/contactos/). Charges may (and most certainly will) apply.
 
 = Where do I report security vulnerabilities found in this plugin? =  
@@ -113,15 +124,15 @@ You can report any security bugs found in the source code of this plugin through
 
 == Changelog ==
 
-= 4.0 -  =
+= 4.0 - 2025-04-26 =
 * [NEW] Multicaixa Express mobile payment (PRO add-on)
 * [NEW] We are now called Naked Cat Plugins 😻
-* [FIX] Make sure the value on the order metabox is shown in Kwanzas and not the shop main currency, if different
-* [DEV] Start implementing some WordPress Coding Standards
+* [FIX] Make sure the value on the order metabox is shown in Kwanzas and not the shop’s main currency, if different
+* [DEV] Start implementing WordPress Coding Standards
 * [DEV] New `order_needs_payment` method to abstract for both payment gateways
 * [DEV] Allow Multicaixa Express (Only available on the PRO add-on) to interact with the main plugin
-* [DEV] Requires WordPress 5.8 and WooCommerce 7.1
-* [DEV] Tested with WordPress 6.8 and WooCommerce 9.8.1
+* [DEV] Requires WordPress 5.8, WooCommerce 7.1, and PHP 7.2
+* [DEV] Tested with WordPress 6.8, and WooCommerce 9.8.2
 
 = 3.0 - 2024-11-13 =
 * [FIX] Load text domain at the right time to avoid PHP notices on WordPress 6.7 and above
