@@ -71,9 +71,9 @@ Do you already know our other WooCommerce (premium) plugins?
 
 = Can I start receiving payments right away? =
 
-No! You have to sign a contract with ProxyPay and an Angolan bank to activate this service. Go to [https://proxypay.co.ao/](https://proxypay.co.ao/) for more information. They can help you out with all the subscription process with them and the bank.
+You have to sign a contract with ProxyPay and an Angolan bank to activate this service. Go to [https://proxypay.co.ao/](https://proxypay.co.ao/) for more information. They can help you out with all the subscription process with them and the bank.
 
-= Can I get Maulticaixa Express mobile payments? =
+= Can I get Multicaixa Express mobile payments? =
 
 Yes, with the [PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/)
 
