@@ -4,7 +4,7 @@ Tags: angola, ecommerce, emis, proxypay, mobile
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 4.0
+Stable tag: 4.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,6 +123,12 @@ For premium support or custom developments, you should contact [Webdados](https:
 You can report any security bugs found in the source code of this plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/woo-multicaixa). The Patchstack team will assist you with verification, CVE assignment and take care of notifying the developers of this plugin.
 
 == Changelog ==
+
+= 4.1 - 2025-10-02 =
+* [FIX] The update checker on the plugin settings page was not working (PRO add-on)
+* [FIX] Icons on the WooCommerce block-based Checkout
+* [DEV] Improve WordPress Coding Standards
+* [DEV] Tested with WordPress 6.9-alpha-60812 and WooCommerce 10.2.2
 
 = 4.0 - 2025-04-26 =
 * [NEW] Multicaixa Express mobile payment (PRO add-on)

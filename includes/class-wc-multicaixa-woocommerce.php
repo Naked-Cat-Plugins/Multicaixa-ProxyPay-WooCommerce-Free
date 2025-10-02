@@ -6,7 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Multicaixa ProxyPay Class
- *
  */
 if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 
@@ -14,7 +13,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 
 		/* Single instance */
 		protected static $_instance = null;
-		public static $instances = 0;
+		public static $instances    = 0;
 
 		/* Internal variables */
 		public $debug              = false;
@@ -32,7 +31,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 		public $ent                = '';
 		public $settings_saved     = '';
 		public $send_to_admin      = '';
-		
+
 		/**
 		 * Constructor for your payment class
 		 *
@@ -41,57 +40,57 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 		 */
 		public function __construct() {
 
-			self::$instances++;
+			++self::$instances;
 
 			$this->id = Multicaixa_WooCommerce()->multicaixa_id;
-	
+
 			// Logs
-			$this->debug = ( $this->get_option( 'debug' ) == 'yes' ? true : false );
+			$this->debug       = ( $this->get_option( 'debug' ) == 'yes' ? true : false );
 			$this->debug_email = $this->get_option( 'debug_email' );
-			
-			//Check version and upgrade
+
+			// Check version and upgrade
 			$this->version = Multicaixa_WooCommerce()->version;
 			$this->upgrade();
-	
-			$this->icon = plugins_url( '../images/icon_multicaixa_48.png', __FILE__ );
-			$this->icon_svg = plugin_dir_path( __FILE__ ).'../images/icon_multicaixa_48.svg';
-			$this->banner = plugins_url( '../images/banner_multicaixa.png', __FILE__ );
-			$this->banner_svg = plugin_dir_path( __FILE__ ).'../images/banner_multicaixa.svg';
 
-			$this->method_title = __( 'Pagamento por Referência no Multicaixa (ProxyPay)', 'woo-multicaixa' );
+			$this->icon       = plugins_url( '../images/icon_multicaixa_48.svg', __FILE__ );
+			$this->banner     = plugins_url( '../images/banner_multicaixa.png', __FILE__ );
+			$this->banner_svg = plugin_dir_path( __FILE__ ) . '../images/banner_multicaixa.svg';
+
+			$this->method_title       = __( 'Pagamento por Referência no Multicaixa (ProxyPay)', 'woo-multicaixa' );
 			$this->method_description = __( 'Easy and simple payment using "Pagamento por Referência" at any "Multicaixa" ATM terminal or your Home Banking service. (Only available to customers of Angolan banks)', 'woo-multicaixa' );
-			$this->api_key = $this->get_option( 'api_key' );
-	
-			//Plugin options and settings
+			$this->api_key            = $this->get_option( 'api_key' );
+
+			// Plugin options and settings
 			$this->init_form_fields();
 			$this->init_settings();
-	
-			//User settings
-			$this->title = $this->get_option( 'title' );
-			$this->description = $this->get_option( 'description' );
+
+			// User settings
+			$this->title              = $this->get_option( 'title' );
+			$this->description        = $this->get_option( 'description' );
 			$this->extra_instructions = $this->get_option( 'extra_instructions' );
-			$this->ent = $this->get_option( 'ent' );
-			$this->settings_saved = $this->get_option( 'settings_saved' );
-			$this->send_to_admin = ( $this->get_option( 'send_to_admin' )=='yes' ? true : false );
-	 	
+			$this->ent                = $this->get_option( 'ent' );
+			$this->settings_saved     = $this->get_option( 'settings_saved' );
+			$this->send_to_admin      = ( $this->get_option( 'send_to_admin' ) == 'yes' ? true : false );
+
 			// Actions and filters
-			if ( self::$instances == 1 ) { //Avoid duplicate actions and filters if it's initiated more than once (if WooCommerce loads after us)
-				add_action( 'woocommerce_update_options_payment_gateways_'.$this->id, array( $this, 'process_admin_options' ) );
+			if ( self::$instances == 1 ) { // Avoid duplicate actions and filters if it's initiated more than once (if WooCommerce loads after us)
+				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options_pro' ) );
-				if ( Multicaixa_WooCommerce()->wpml_active ) add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'register_wpml_strings' ) );
-				add_action( 'woocommerce_thankyou_'.$this->id, array( $this, 'thankyou' ) );
+				if ( Multicaixa_WooCommerce()->wpml_active ) {
+					add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'register_wpml_strings' ) );
+				}
+				add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'thankyou' ) );
 				add_action( 'woocommerce_order_details_after_order_table', array( $this, 'order_details_after_order_table' ), 9 );
 				add_filter( 'woocommerce_available_payment_gateways', array( $this, 'disable_if_currency_not_kwanza' ) );
 				// Customer Emails
-				//add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions' ), 10, 3 ); - "Hyyan WooCommerce Polylang Integration" removes this action
-				add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions_1' ), 10, 3 ); //Avoid "Hyyan WooCommerce Polylang Integration" remove_action
+				// add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions' ), 10, 3 ); - "Hyyan WooCommerce Polylang Integration" removes this action
+				add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions_1' ), 10, 3 ); // Avoid "Hyyan WooCommerce Polylang Integration" remove_action
 			}
 
 			// Ensures only one instance of our plugin is loaded or can be loaded - works if WooCommerce loads the payment gateways before we do
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = $this;
 			}
-			
 		}
 
 		/* Ensures only one instance of our plugin is loaded or can be loaded */
@@ -107,14 +106,16 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 		 */
 		function upgrade() {
 			if ( $this->get_option( 'version' ) < $this->version ) {
-				//Upgrade
-				$this->debug_log( 'Upgrade to '.$this->version.' started' );
-				//Upgrade on the database - Risky?
-				$temp = get_option( 'woocommerce_'.$this->id.'_settings', '' );
-				if ( !is_array($temp) ) $temp = array();
+				// Upgrade
+				$this->debug_log( 'Upgrade to ' . $this->version . ' started' );
+				// Upgrade on the database - Risky?
+				$temp = get_option( 'woocommerce_' . $this->id . '_settings', '' );
+				if ( ! is_array( $temp ) ) {
+					$temp = array();
+				}
 				$temp['version'] = $this->version;
-				update_option( 'woocommerce_'.$this->id.'_settings', $temp );
-				$this->debug_log( 'Upgrade to '.$this->version.' finished' );
+				update_option( 'woocommerce_' . $this->id . '_settings', $temp );
+				$this->debug_log( 'Upgrade to ' . $this->version . ' finished' );
 			}
 		}
 
@@ -122,16 +123,20 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 		 * WPML compatibility
 		 */
 		function register_wpml_strings() {
-			//These are already registered by WooCommerce Multilingual
-			/*$to_register=array(
+			// These are already registered by WooCommerce Multilingual
+			/*
+			$to_register=array(
 				'title',
 				'description',
 			);*/
-			$to_register = apply_filters( 'multicaixa_proxypay_wpml_strings', array(
-				'extra_instructions'
-			) );
-			foreach( $to_register as $string ) {
-				icl_register_string( $this->id, $this->id.'_'.$string, $this->settings[$string] );
+			$to_register = apply_filters(
+				'multicaixa_proxypay_wpml_strings',
+				array(
+					'extra_instructions',
+				)
+			);
+			foreach ( $to_register as $string ) {
+				icl_register_string( $this->id, $this->id . '_' . $string, $this->settings[ $string ] );
 			}
 		}
 
@@ -139,101 +144,106 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 		 * Initialise Gateway Settings Form Fields
 		 */
 		function init_form_fields() {
-		
+
 			$this->form_fields = array(
 				'enabled' => array(
-								'title' => __( 'Enable/Disable', 'woo-multicaixa' ), 
-								'type' => 'checkbox', 
-								'label' => __( 'Enable "Pagamento por Referência no Multicaixa" (using ProxyPay)', 'woo-multicaixa' ), 
-								'default' => 'no'
-							),
-				'ent' => array(
-								'title' => __( 'Entity', 'woo-multicaixa' ), 
-								'type' => 'number',
-								'description' => __( 'Entity provided by your bank.', 'woo-multicaixa' ), 
-								'default' => '',
-								'css' => 'width: 80px;',
-								'custom_attributes' => array(
-									'maxlength'	=> 5,
-									'size' => 5,
-									'max' => 99999
-								)
-							),
+					'title'   => __( 'Enable/Disable', 'woo-multicaixa' ),
+					'type'    => 'checkbox',
+					'label'   => __( 'Enable "Pagamento por Referência no Multicaixa" (using ProxyPay)', 'woo-multicaixa' ),
+					'default' => 'no',
+				),
+				'ent'     => array(
+					'title'             => __( 'Entity', 'woo-multicaixa' ),
+					'type'              => 'number',
+					'description'       => __( 'Entity provided by your bank.', 'woo-multicaixa' ),
+					'default'           => '',
+					'css'               => 'width: 80px;',
+					'custom_attributes' => array(
+						'maxlength' => 5,
+						'size'      => 5,
+						'max'       => 99999,
+					),
+				),
 			);
-			//if( strlen( $this->get_option( 'ent' ) ) == 5 && intval( $this->get_option( 'ent' ) )>0 && trim( $this->api_key ) !='' ) {
-				$this->form_fields = array_merge( $this->form_fields, array(
-					'api_key' => array(
-									'title' => __( 'API key', 'woo-multicaixa' ), 
-									'type' => 'text', 
-									'description' => __( 'The API key provided by ProxyPay.', 'woo-multicaixa' ).'<br/>'.(
-										Multicaixa_WooCommerce()->test_mode
-										?
-										'<strong class="multicaixa_error">'.__( 'Test mode enabled.', 'woo-multicaixa' ).'</strong>'
-										:
-										'<strong class="multicaixa_ok">'.__( 'Live mode enabled.', 'woo-multicaixa' ).'</strong>'
-									),
-								),
-					'title' => array(
-									'title' => __( 'Title', 'woo-multicaixa' ), 
-									'type' => 'text', 
-									'description' => __( 'This controls the title which the user sees during checkout.', 'woo-multicaixa' )
-													.( Multicaixa_WooCommerce()->wpml_active ? ' '.__( 'You should translate this string in <a href="admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php">WPML - String Translation</a> after saving the settings', 'woo-multicaixa' ) : '' ), 
-									'default' => __( 'Pagamento por Referência no Multicaixa', 'woo-multicaixa' )
-								),
-					'description' => array(
-									'title' => __( 'Description', 'woo-multicaixa' ), 
-									'type' => 'textarea',
-									'description' => __( 'This controls the description which the user sees during checkout.', 'woo-multicaixa' )
-													.( Multicaixa_WooCommerce()->wpml_active ? ' '.__( 'You should translate this string in <a href="admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php">WPML - String Translation</a> after saving the settings', 'woo-multicaixa' ) : '' ), 
-									'default' => $this->get_method_description()
-								),
-					'extra_instructions' => array(
-									'title' => __( 'Extra instructions', 'woo-multicaixa' ), 
-									'type' => 'textarea',
-									'description' => __( 'This controls the text which the user sees below the payment details on the "Thank you" page and "New order" email.', 'woo-multicaixa' )
-													.( Multicaixa_WooCommerce()->wpml_active ? ' '.__( 'You should translate this string in <a href="admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php">WPML - String Translation</a> after saving the settings', 'woo-multicaixa' ) : '' ), 
-									'default' => __( 'The receipt issued by the ATM machine is a proof of payment. Keep it.', 'woo-multicaixa' )
-								),
-					'send_to_admin' => array(
-									'title' => __( 'Send instructions to admin?', 'woo-multicaixa' ), 
-									'type' => 'checkbox', 
-									'label' => __( 'Should the payment details also be sent to admin?', 'woo-multicaixa' ), 
-									'default' => 'yes'
-								),
-					'debug' => array(
-									'title' => __( 'Debug Log', 'woo-multicaixa' ),
-									'type' => 'checkbox',
-									'label' => __( 'Enable logging', 'woo-multicaixa' ),
-									'default' => 'yes',
-									'description' => sprintf(
-														__( 'Log plugin events in %s', 'woo-multicaixa' ),
-														( ( defined( 'WC_LOG_HANDLER' ) && 'WC_Log_Handler_DB' === WC_LOG_HANDLER ) || version_compare( WC_VERSION, '8.6', '>=' ) )
-														?
-														'<a href="admin.php?page=wc-status&tab=logs&source='.esc_attr( $this->id ).'" target="_blank">'.__( 'WooCommerce &gt; Status &gt; Logs', 'woo-multicaixa' ).'</a>'
-														:
-														'<code>'.wc_get_log_file_path( $this->id ).'</code>'
-													),
-								),
-					'debug_email' => array(
-									'title' => __( 'Debug to email', 'woo-multicaixa' ),
-									'type' => 'email',
-									'label' => __( 'Enable email logging', 'woo-multicaixa' ),
-									'default' => '',
-									'description' => __( 'Send plugin events to this email address.', 'woo-multicaixa' ),
-								)
-				)	);
-			//}
-			$this->form_fields = array_merge( $this->form_fields , array(
-				'settings_saved' => array(
-								'title' => '', 
-								'type' => 'hidden',
-								'default' => 0
+			// if( strlen( $this->get_option( 'ent' ) ) == 5 && intval( $this->get_option( 'ent' ) )>0 && trim( $this->api_key ) !='' ) {
+				$this->form_fields = array_merge(
+					$this->form_fields,
+					array(
+						'api_key'            => array(
+							'title'       => __( 'API key', 'woo-multicaixa' ),
+							'type'        => 'text',
+							'description' => __( 'The API key provided by ProxyPay.', 'woo-multicaixa' ) . '<br/>' . (
+								Multicaixa_WooCommerce()->test_mode
+								?
+								'<strong class="multicaixa_error">' . __( 'Test mode enabled.', 'woo-multicaixa' ) . '</strong>'
+								:
+								'<strong class="multicaixa_ok">' . __( 'Live mode enabled.', 'woo-multicaixa' ) . '</strong>'
 							),
-			) );
+						),
+						'title'              => array(
+							'title'       => __( 'Title', 'woo-multicaixa' ),
+							'type'        => 'text',
+							'description' => __( 'This controls the title which the user sees during checkout.', 'woo-multicaixa' )
+											. ( Multicaixa_WooCommerce()->wpml_active ? ' ' . __( 'You should translate this string in <a href="admin.php?page=wpml-string-translation%1$2Fmenu%2$2Fstring-translation.php">WPML - String Translation</a> after saving the settings', 'woo-multicaixa' ) : '' ),
+							'default'     => __( 'Pagamento por Referência no Multicaixa', 'woo-multicaixa' ),
+						),
+						'description'        => array(
+							'title'       => __( 'Description', 'woo-multicaixa' ),
+							'type'        => 'textarea',
+							'description' => __( 'This controls the description which the user sees during checkout.', 'woo-multicaixa' )
+											. ( Multicaixa_WooCommerce()->wpml_active ? ' ' . __( 'You should translate this string in <a href="admin.php?page=wpml-string-translation%1$2Fmenu%2$2Fstring-translation.php">WPML - String Translation</a> after saving the settings', 'woo-multicaixa' ) : '' ),
+							'default'     => $this->get_method_description(),
+						),
+						'extra_instructions' => array(
+							'title'       => __( 'Extra instructions', 'woo-multicaixa' ),
+							'type'        => 'textarea',
+							'description' => __( 'This controls the text which the user sees below the payment details on the "Thank you" page and "New order" email.', 'woo-multicaixa' )
+											. ( Multicaixa_WooCommerce()->wpml_active ? ' ' . __( 'You should translate this string in <a href="admin.php?page=wpml-string-translation%1$2Fmenu%2$2Fstring-translation.php">WPML - String Translation</a> after saving the settings', 'woo-multicaixa' ) : '' ),
+							'default'     => __( 'The receipt issued by the ATM machine is a proof of payment. Keep it.', 'woo-multicaixa' ),
+						),
+						'send_to_admin'      => array(
+							'title'   => __( 'Send instructions to admin?', 'woo-multicaixa' ),
+							'type'    => 'checkbox',
+							'label'   => __( 'Should the payment details also be sent to admin?', 'woo-multicaixa' ),
+							'default' => 'yes',
+						),
+						'debug'              => array(
+							'title'       => __( 'Debug Log', 'woo-multicaixa' ),
+							'type'        => 'checkbox',
+							'label'       => __( 'Enable logging', 'woo-multicaixa' ),
+							'default'     => 'yes',
+							'description' => sprintf(
+								__( 'Log plugin events in %s', 'woo-multicaixa' ),
+								( ( defined( 'WC_LOG_HANDLER' ) && 'WC_Log_Handler_DB' === WC_LOG_HANDLER ) || version_compare( WC_VERSION, '8.6', '>=' ) )
+													?
+													'<a href="admin.php?page=wc-status&tab=logs&source=' . esc_attr( $this->id ) . '" target="_blank">' . __( 'WooCommerce &gt; Status &gt; Logs', 'woo-multicaixa' ) . '</a>'
+													:
+													'<code>' . wc_get_log_file_path( $this->id ) . '</code>'
+							),
+						),
+						'debug_email'        => array(
+							'title'       => __( 'Debug to email', 'woo-multicaixa' ),
+							'type'        => 'email',
+							'label'       => __( 'Enable email logging', 'woo-multicaixa' ),
+							'default'     => '',
+							'description' => __( 'Send plugin events to this email address.', 'woo-multicaixa' ),
+						),
+					)
+				);
+			// }
+			$this->form_fields = array_merge(
+				$this->form_fields,
+				array(
+					'settings_saved' => array(
+						'title'   => '',
+						'type'    => 'hidden',
+						'default' => 0,
+					),
+				)
+			);
 
-			//Allow other plugins to add settings fields
-			$this->form_fields = array_merge( $this->form_fields , apply_filters( 'multicaixa_proxypay_multicaixa_settings_fields', array( ) ) );
-		
+			// Allow other plugins to add settings fields
+			$this->form_fields = array_merge( $this->form_fields, apply_filters( 'multicaixa_proxypay_multicaixa_settings_fields', array() ) );
 		}
 		public function admin_options() {
 			$title = esc_html( $this->get_method_title() );
@@ -249,20 +259,23 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 							<?php
 						} else {
 							?>
-							<img src="<?php echo esc_attr( $this->banner  ); ?>" alt="<?php echo esc_attr( $title ); ?>" title="<?php echo esc_attr( $title ); ?>"/>
+							<img src="<?php echo esc_attr( $this->banner ); ?>" alt="<?php echo esc_attr( $title ); ?>" title="<?php echo esc_attr( $title ); ?>"/>
 							<?php
 						}
 						?>
 						<br/>
 						<?php echo $title; ?>
 						<small>v.<?php echo $this->version; ?></small>
-						<?php if ( function_exists('wc_back_link') ) echo wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ); ?>
+						<?php
+						if ( function_exists( 'wc_back_link' ) ) {
+							echo wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) );}
+						?>
 					</h2>
 					<?php echo wp_kses_post( wpautop( $this->get_method_description() ) ); ?>
 					<p><strong><?php esc_html_e( 'In order to use this payment method you must:', 'woo-multicaixa' ); ?></strong></p>
 					<ul class="multicaixa_leftbar_list">
 						<li><?php printf( __( 'Set WooCommerce currency to <strong>Angolan Kwanza</strong> %1$s', 'woo-multicaixa' ), '<a href="admin.php?page=wc-settings&amp;tab=general#woocommerce_currency">&gt;&gt;</a>.' ); ?></li>
-						<li><?php printf( __( 'Sign a contract with a bank and %1$s. To know more about this service, please go to %2$s.', 'woo-multicaixa' ), '<strong><a href="https://proxypay.co.ao/'.esc_attr( Multicaixa_WooCommerce()->out_link_utm ).'" target="_blank">ProxyPay</a></strong>', '<a href="https://proxypay.co.ao/'.esc_attr( Multicaixa_WooCommerce()->out_link_utm ).'" target="_blank">https://proxypay.co.ao/</a>' ); ?></li>
+						<li><?php printf( __( 'Sign a contract with a bank and %1$s. To know more about this service, please go to %2$s.', 'woo-multicaixa' ), '<strong><a href="https://proxypay.co.ao/' . esc_attr( Multicaixa_WooCommerce()->out_link_utm ) . '" target="_blank">ProxyPay</a></strong>', '<a href="https://proxypay.co.ao/' . esc_attr( Multicaixa_WooCommerce()->out_link_utm ) . '" target="_blank">https://proxypay.co.ao/</a>' ); ?></li>
 						<li><?php _e( 'Fill out all the details (Entity and API key) provided by your bank and <strong>ProxyPay</strong> in the fields below.', 'woo-multicaixa' ); ?></li>
 					</ul>
 					<?php
@@ -271,23 +284,23 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 						<p><strong>
 							<?php
 							printf(
-								__( 'If you want to get automatic payment notifications, and other functionalities, you need to get the %sPRO add-on%s' , 'woo-multicaixa' ),
-								'<a href="https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/'.esc_attr( Multicaixa_WooCommerce()->out_link_utm ).'" target="_blank">',
+								__( 'If you want to get automatic payment notifications, and other functionalities, you need to get the %1$sPRO add-on%2$s', 'woo-multicaixa' ),
+								'<a href="https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/' . esc_attr( Multicaixa_WooCommerce()->out_link_utm ) . '" target="_blank">',
 								'</a>'
 							);
 							?>
 						</strong></p>
 						<?php
 					}
-					$hide_extra_fields=false;
-					if(
+					$hide_extra_fields = false;
+					if (
 						trim( strlen( $this->ent ) ) == 5
 						&&
 						intval( $this->ent ) > 0
 						&&
 						trim( $this->api_key ) != ''
 					) {
-						//OK
+						// OK
 					} else {
 						$hide_extra_fields = true;
 						if ( $this->settings_saved == 1 ) {
@@ -323,7 +336,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 						$this->generate_settings_html();
 					} else {
 						?>
-						<p><strong><?php _e( 'ERROR!', 'woo-multicaixa' ); ?> <?php printf( __( 'Set WooCommerce currency to <strong>Angolan Kwanza</strong> %1$s', 'woo-multicaixa' ), '<a href="admin.php?page=wc-settings&amp;tab=general#woocommerce_currency">'.__( 'here', 'woo-multicaixa' ).'</a>.' ); ?></strong></p>
+						<p><strong><?php _e( 'ERROR!', 'woo-multicaixa' ); ?> <?php printf( __( 'Set WooCommerce currency to <strong>Angolan Kwanza</strong> %1$s', 'woo-multicaixa' ), '<a href="admin.php?page=wc-settings&amp;tab=general#woocommerce_currency">' . __( 'here', 'woo-multicaixa' ) . '</a>.' ); ?></strong></p>
 						<?php
 					}
 					?>
@@ -340,12 +353,8 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 		 * Icon HTML
 		 */
 		public function get_icon() {
-			$alt = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id.'_title', $this->title ) : $this->title );
-			if ( apply_filters( 'multicaixa_proxypay_use_svg', true ) ) {
-				$icon_html = '<img src=\'data:image/svg+xml;base64,'.base64_encode( file_get_contents( $this->icon_svg ) ).'\' alt="'.esc_attr( $alt ).'" width="24" height="24">';
-			} else {
-				$icon_html = '<img src="'.esc_attr( $this->icon ).'" alt="'.esc_attr( $alt ).'" width="24" height="24"/>';
-			}
+			$alt = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id . '_title', $this->title ) : $this->title );
+			$icon_html = '<img src="' . esc_url( $this->icon ) . '" alt="' . esc_attr( $alt ) . '" width="24" height="24">';
 			return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
 		}
 
@@ -354,7 +363,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 		 */
 		function thankyou( $order_id ) {
 			if ( is_object( $order_id ) ) {
-				$order = $order_id;
+				$order    = $order_id;
 				$order_id = $order->get_id();
 			} else {
 				$order = wc_get_order( $order_id );
@@ -375,16 +384,16 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 						}
 					}
 				} else {
-					//Processing - Not needed
-					//if ( $order->has_status( 'processing' ) && !is_wc_endpoint_url( 'view-order') ) {
-					//	echo $this->email_instructions_payment_received( $order_id );
-					//}
+					// Processing - Not needed
+					// if ( $order->has_status( 'processing' ) && !is_wc_endpoint_url( 'view-order') ) {
+					// echo $this->email_instructions_payment_received( $order_id );
+					// }
 				}
 			}
 		}
 		function thankyou_instructions_table_html( $ent, $ref, $order_total, $end_datetime, $order_id ) {
-			$alt = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id.'_title', $this->title ) : $this->title );
-			$extra_instructions = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id.'_extra_instructions', $this->extra_instructions ) : $this->extra_instructions );
+			$alt                = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id . '_title', $this->title ) : $this->title );
+			$extra_instructions = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id . '_extra_instructions', $this->extra_instructions ) : $this->extra_instructions );
 			ob_start();
 			?>
 			<style type="text/css">
@@ -430,7 +439,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 							<?php
 						} else {
 							?>
-							<img src="<?php echo esc_attr( $this->banner  ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>"/>
+							<img src="<?php echo esc_attr( $this->banner ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>"/>
 							<?php
 						}
 						?>
@@ -460,66 +469,63 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 			return apply_filters( 'multicaixa_proxypay_thankyou_instructions_table_html', ob_get_clean(), $ent, $ref, $order_total, $end_datetime, $order_id );
 		}
 		function order_details_after_order_table( $order ) {
-			if( is_wc_endpoint_url( 'view-order') ) {
+			if ( is_wc_endpoint_url( 'view-order' ) ) {
 				$this->thankyou( $order );
 			}
 		}
-		
+
 
 
 
 		/**
 		 * Email instructions
 		 */
-		function email_instructions_1( $order, $sent_to_admin, $plain_text ) { //"Hyyan WooCommerce Polylang" Integration removes "email_instructions" so we use "email_instructions_1"
+		function email_instructions_1( $order, $sent_to_admin, $plain_text ) {
+			// "Hyyan WooCommerce Polylang" Integration removes "email_instructions" so we use "email_instructions_1"
 			$this->email_instructions( $order, $sent_to_admin, $plain_text );
 		}
 		function email_instructions( $order, $sent_to_admin, $plain_text ) {
-			//Avoid duplicate email instructions on some edge cases
+			// Avoid duplicate email instructions on some edge cases
 			$send = false;
 			if ( ( $sent_to_admin ) ) {
 				$send = true;
-			} else {
-				if ( ( !$sent_to_admin ) ) {
+			} elseif ( ( ! $sent_to_admin ) ) {
 					$send = true;
-				}
 			}
-			//Send
+			// Send
 			if ( $send ) {
 				$order_id = $order->get_id();
-				//Go
+				// Go
 				if ( $this->id === $order->get_payment_method() ) {
 					$show = false;
-					if ( !$sent_to_admin ) {
+					if ( ! $sent_to_admin ) {
 						$show = true;
-					} else {
-						if ( $this->send_to_admin ) {
+					} elseif ( $this->send_to_admin ) {
 							$show = true;
-						}
 					}
 					if ( $show ) {
-						//WPML - Force correct language (?)
+						// WPML - Force correct language (?)
 						if ( Multicaixa_WooCommerce()->wpml_active ) {
 							global $sitepress;
 							if ( $sitepress ) {
 								$lang = $order->get_meta( 'wpml_language' );
-								if( !empty( $lang ) ){
+								if ( ! empty( $lang ) ) {
 									Multicaixa_WooCommerce()->change_email_language( $lang );
 								}
 							}
 						}
-						//On Hold or pending
+						// On Hold or pending
 						if ( Multicaixa_WooCommerce()->order_needs_payment( $order ) || $order->has_status( 'partially-paid' ) ) {
-							//if ( Multicaixa_WooCommerce()->wc_deposits_active && $order->get_status() == 'partially-paid' ) {
-								//WooCommerce deposits - No instructions
-							//} else {
+							// if ( Multicaixa_WooCommerce()->wc_deposits_active && $order->get_status() == 'partially-paid' ) {
+								// WooCommerce deposits - No instructions
+							// } else {
 								$ref = Multicaixa_WooCommerce()->multicaixa_get_ref( $order_id );
-								if ( is_array( $ref) ) {
-									if ( apply_filters( 'multicaixa_proxypay_email_instructions_pending_send', true, $order_id ) ) {
-										echo $this->email_instructions_table_html( $ref['ent'], $ref['ref'], $ref['val'], $ref['end_datetime'], $order_id );
-									}
-								} else {
-									?>
+							if ( is_array( $ref ) ) {
+								if ( apply_filters( 'multicaixa_proxypay_email_instructions_pending_send', true, $order_id ) ) {
+									echo $this->email_instructions_table_html( $ref['ent'], $ref['ref'], $ref['val'], $ref['end_datetime'], $order_id );
+								}
+							} else {
+								?>
 									<p><strong><?php _e( 'Error getting Multicaixa payment details', 'woo-multicaixa' ); ?>.</strong></p>
 									<?php
 									if ( is_string( $ref ) ) {
@@ -527,10 +533,10 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 										<p><?php echo $ref; ?></p>
 										<?php
 									}
-								}
-							//}
+							}
+							// }
 						} else {
-							//Processing
+							// Processing
 							if ( $order->has_status( 'processing' ) ) {
 								if ( apply_filters( 'multicaixa_proxypay_email_instructions_payment_received_send', true, $order_id ) ) {
 									echo $this->email_instructions_payment_received( $order_id );
@@ -538,13 +544,13 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 							}
 						}
 					}
-					//$this->debug_log( 'Email instructions show: '.( $show ? 'true' : 'false' ) );
+					// $this->debug_log( 'Email instructions show: '.( $show ? 'true' : 'false' ) );
 				}
 			}
 		}
 		function email_instructions_table_html( $ent, $ref, $order_total, $end_datetime, $order_id ) {
-			$alt = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id.'_title', $this->title ) : $this->title );
-			$extra_instructions = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id.'_extra_instructions', $this->extra_instructions ) : $this->extra_instructions );
+			$alt                = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id . '_title', $this->title ) : $this->title );
+			$extra_instructions = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id . '_extra_instructions', $this->extra_instructions ) : $this->extra_instructions );
 			ob_start();
 			?>
 			<table cellpadding="10" cellspacing="0" align="center" border="0" style="margin: auto; margin-top: 2em; margin-bottom: 2em; border-collapse: collapse; border: 1px solid #0B3258; border-radius: 4px !important; background-color: #FFFFFF;">
@@ -552,7 +558,7 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 					<td style="border: 1px solid #0B3258; border-top-right-radius: 4px !important; border-top-left-radius: 4px !important; text-align: center; color: #000000; font-weight: bold;" colspan="2">
 						<?php _e( 'Payment instructions', 'woo-multicaixa' ); ?>
 						<br/>
-						<img src="<?php echo esc_attr( $this->banner  ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin-top: 10px; max-width: 200px; height: auto;"/>
+						<img src="<?php echo esc_attr( $this->banner ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin-top: 10px; max-width: 200px; height: auto;"/>
 					</td>
 				</tr>
 				<tr>
@@ -579,11 +585,11 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 			return apply_filters( 'multicaixa_proxypay_email_instructions_table_html', ob_get_clean(), $ent, $ref, $order_total, $end_datetime, $order_id );
 		}
 		function email_instructions_payment_received( $order_id ) {
-			$alt = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id.'_title', $this->title ) : $this->title );
+			$alt = ( Multicaixa_WooCommerce()->wpml_active ? icl_t( $this->id, $this->id . '_title', $this->title ) : $this->title );
 			ob_start();
 			?>
 			<p style="text-align: center; margin: auto; margin-top: 2em; margin-bottom: 2em;">
-				<img src="<?php echo esc_attr( $this->banner  ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin-top: 10px; max-width: 200px; height: auto;"/>
+				<img src="<?php echo esc_attr( $this->banner ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin-top: 10px; max-width: 200px; height: auto;"/>
 				<br/>
 				<strong><?php _e( 'Multicaixa payment received.', 'woo-multicaixa' ); ?></strong>
 				<br/>
@@ -601,17 +607,21 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 			$ref   = Multicaixa_WooCommerce()->multicaixa_get_ref( $order_id );
 			if ( is_array( $ref ) ) {
 				// Mark as on-hold
-				if ( apply_filters( 'multicaixa_proxypay_set_on_hold', true, $order_id ) ) $order->update_status( 'on-hold', __( 'Awaiting Multicaixa payment.', 'woo-multicaixa' ) );
+				if ( apply_filters( 'multicaixa_proxypay_set_on_hold', true, $order_id ) ) {
+					$order->update_status( 'on-hold', __( 'Awaiting Multicaixa payment.', 'woo-multicaixa' ) );
+				}
 				// Run action
 				do_action( 'multicaixa_proxypay_process_payment', $order_id ); // To allow pro plugin do his stuff here, like reducing stock for example
 				// Remove cart
 				WC()->cart->empty_cart();
 				// Empty awaiting payment session
-				if ( isset( $_SESSION['order_awaiting_payment'] ) ) unset($_SESSION['order_awaiting_payment'] );
+				if ( isset( $_SESSION['order_awaiting_payment'] ) ) {
+					unset( $_SESSION['order_awaiting_payment'] );
+				}
 				// Return thankyou redirect
 				return array(
-					'result' => 'success',
-					'redirect' => $this->get_return_url( $order )
+					'result'   => 'success',
+					'redirect' => $this->get_return_url( $order ),
 				);
 			} else {
 				throw new Exception( (string) $ref );
@@ -640,20 +650,23 @@ if ( ! class_exists( 'WC_Multicaixa_WooCommerce' ) ) {
 
 		/* For PRO */
 		public function generate_multicaixa_validity_html( $value ) {
-			if ( function_exists( 'Multicaixa_WooCommerce_Pro' ) )
+			if ( function_exists( 'Multicaixa_WooCommerce_Pro' ) ) {
 				return Multicaixa_WooCommerce_Pro()->generate_multicaixa_validity_html( $value );
+			}
 			return null;
 		}
 		public function generate_multicaixa_webhook_html( $value ) {
-			if ( function_exists( 'Multicaixa_WooCommerce_Pro' ) )
+			if ( function_exists( 'Multicaixa_WooCommerce_Pro' ) ) {
 				return Multicaixa_WooCommerce_Pro()->generate_multicaixa_webhook_html( $value );
+			}
 			return null;
 		}
 
 		/* Process PRO fields */
 		public function process_admin_options_pro() {
-			if ( function_exists( 'Multicaixa_WooCommerce_Pro' ) ) Multicaixa_WooCommerce_Pro()->process_admin_options_pro();
+			if ( function_exists( 'Multicaixa_WooCommerce_Pro' ) ) {
+				Multicaixa_WooCommerce_Pro()->process_admin_options_pro();
+			}
 		}
-
 	}
 }

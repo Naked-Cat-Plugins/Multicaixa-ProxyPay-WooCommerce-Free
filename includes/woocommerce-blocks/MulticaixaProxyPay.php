@@ -42,8 +42,8 @@ final class MulticaixaProxyPay extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_script_handles() {
-		wp_register_script( 'wc-payment-method-multicaixa-proxypay', plugins_url( 'build/index.js', __FILE__ ), array(), Multicaixa_WooCommerce()->version.( WP_DEBUG ? '.'.rand( 0, 9999 ) : '' ), true );
-		return [ 'wc-payment-method-multicaixa-proxypay' ];
+		wp_register_script( 'wc-payment-method-multicaixa-proxypay', plugins_url( 'build/index.js', __FILE__ ), array(), Multicaixa_WooCommerce()->version . ( WP_DEBUG ? '.' . rand( 0, 9999 ) : '' ), true );
+		return array( 'wc-payment-method-multicaixa-proxypay' );
 	}
 
 	/**
@@ -52,10 +52,13 @@ final class MulticaixaProxyPay extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_data() {
-		return apply_filters( 'multicaixa_proxypay_blocks_payment_method_data', array(
-			'title'                             => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-			'description'                       => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
-			'icon'                              => Multicaixa_WooCommerce()->multicaixa_icon_url,
-		) );
+		return apply_filters(
+			'multicaixa_proxypay_blocks_payment_method_data',
+			array(
+				'title'       => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
+				'description' => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+				'icon'        => Multicaixa_WooCommerce()->multicaixa_icon_url,
+			)
+		);
 	}
 }

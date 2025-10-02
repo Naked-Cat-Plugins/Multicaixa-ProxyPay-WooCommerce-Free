@@ -26,7 +26,7 @@ final class Multicaixa_ProxyPay_API {
 	}
 
 	/* Create the request arguments */
-	function create_request_arguments( $method, $data = NULL ) {
+	function create_request_arguments( $method, $data = null ) {
 		$data = json_encode( $data );
 		return array(
 			'method'      => $method,
@@ -40,10 +40,10 @@ final class Multicaixa_ProxyPay_API {
 	/* Create the headers */
 	function create_headers( $data ) {
 		return array(
-			'Authorization'  => 'Token '.$this->api_key,
+			'Authorization'  => 'Token ' . $this->api_key,
 			'Accept'         => 'application/vnd.proxypay.v2+json',
 			'Content-Type'   => 'application/json',
-			'Content-Length' => strlen($data),
+			'Content-Length' => strlen( $data ),
 		);
 	}
 
@@ -51,10 +51,10 @@ final class Multicaixa_ProxyPay_API {
 	function request( $action, $args, $expected_http_code ) {
 		Multicaixa_WooCommerce()->debug_log(
 			Multicaixa_WooCommerce()->multicaixa_id,
-			'ProxyPay API Request starting on URL: '.$this->url.'/'.$action.' / Args: '.serialize( $args ),
+			'ProxyPay API Request starting on URL: ' . $this->url . '/' . $action . ' / Args: ' . serialize( $args ),
 			'debug'
 		);
-		$response = wp_remote_request( $this->url.'/'.$action, $args );
+		$response = wp_remote_request( $this->url . '/' . $action, $args );
 		if ( is_wp_error( $response ) ) {
 			return array(
 				'success'   => false,
@@ -96,5 +96,4 @@ final class Multicaixa_ProxyPay_API {
 		$args = $this->create_request_arguments( 'POST', $data );
 		return $this->request( $action, $args, 200 );
 	}
-
 }
