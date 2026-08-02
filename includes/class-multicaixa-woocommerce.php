@@ -506,7 +506,8 @@ final class Multicaixa_WooCommerce {
 		if ( ! empty( $lang ) && $lang !== $sitepress->get_default_language() ) {
 			$this->locale = $sitepress->get_locale( $lang ); // Set global to be used on wpml_ajax_fix_locale_do_it above
 			add_filter( 'plugin_locale', array( $this, 'wpml_ajax_fix_locale_do_it' ), 1, 2 );
-			multicaixa_load_textdomain();
+			unload_textdomain( 'woo-multicaixa' );
+			load_plugin_textdomain( 'woo-multicaixa' );
 		}
 	}
 
@@ -535,7 +536,7 @@ final class Multicaixa_WooCommerce {
 			<p><a href="https://proxypay.co.ao/<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'woo-multicaixa' ), 'ProxyPay' ) ); ?>" target="_blank"><img src="<?php echo plugins_url( '../images/proxypay.svg', __FILE__ ); ?>" width="200"/></a></p>
 			<h4><?php _e( 'Development and premium technical support', 'woo-multicaixa' ); ?>:</h4>
 			<p>
-				<a href="https://nakedcatplugins.com<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'woo-multicaixa' ), 'PT Woo Plugins' ) ); ?>" target="_blank">
+				<a href="https://nakedcatplugins.com<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'woo-multicaixa' ), 'Naked Cat Plugins' ) ); ?>" target="_blank">
 					<img src="<?php echo plugins_url( '../images/nakedcatplugins-plugins-for-wordpress.svg', __FILE__ ); ?>" width="200"/>
 				</a>
 			</p>

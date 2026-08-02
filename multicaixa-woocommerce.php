@@ -3,7 +3,7 @@
  * Plugin Name:          Payment Multicaixa (ProxyPay gateway) for WooCommerce
  * Plugin URI:           https://www.webdados.pt/wordpress/plugins/multicaixa-gateway-proxypay-para-woocommerce-wordpress/
  * Description:          This plugin allows customers with an Angolan bank account to pay WooCommerce orders in Kwanzas using Multicaixa (Pagamentos por Referência), through ProxyPay’s payment gateway.
- * Version:              4.1
+ * Version:              4.1.1
  * Author:               Naked Cat Plugins (by Webdados)
  * Author URI:           https://nakedcatplugins.com
  * Text Domain:          woo-multicaixa

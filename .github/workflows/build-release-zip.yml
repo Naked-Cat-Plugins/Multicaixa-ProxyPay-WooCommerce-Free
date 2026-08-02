@@ -1,4 +1,4 @@
-name: Build release zip
+name: Build release zip when pushing tag
 
 on:
   push:
@@ -18,20 +18,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    # Create the zip file using https://github.com/marketplace/actions/zip-release
-    - name: Zip Release
-      uses: TheDoctor0/zip-release@0.7.6
-      with:
-        type: 'zip'
-        filename: 'woo-multicaixa.zip' # Name of the archive file
-        exclusions: ' *.git* *.github* /*node_modules* .distignore .gitignore .phpcs.xml.dist README.md createzip.command package-lock.json package.json webpack.config.js' # Would be great to get this automatically from .distignore
+    # Create the zip file excluding files and directories listed in .distignore
+    - name: 📦 Zip Release
+      uses: webdados/shared-actions/create-release-zip@main
     
     # Create release and upload the zip file as an asset using https://github.com/marketplace/actions/gh-release
+    # Tags with a hyphen (e.g. 8.1-beta.1, 8.1-rc.1) are treated as pre-releases and marked as such
     - name: Publish Release
-      uses: softprops/action-gh-release@v2.3.3
+      uses: softprops/action-gh-release@v3
       with:
         tag_name: ${{ github.ref_name }}
         name: ${{ github.ref_name }}
         draft: false
-        prerelease: false
+        prerelease: ${{ contains(github.ref_name, '-') }}
         files: woo-multicaixa.zip

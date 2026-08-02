@@ -4,7 +4,7 @@ Tags: angola, ecommerce, emis, proxypay, mobile
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 4.1
+Stable tag: 4.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,6 +123,10 @@ For premium support or custom developments, you should contact [Webdados](https:
 You can report any security bugs found in the source code of this plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/woo-multicaixa). The Patchstack team will assist you with verification, CVE assignment and take care of notifying the developers of this plugin.
 
 == Changelog ==
+
+= 4.1.1 - 2026-08-02 =
+* [FIX] Fatal error when a customer note was added to an order with a different WPML language than the site's default
+* [TWEAK] Support sidebar link now refers to Naked Cat Plugins instead of the old PT Woo Plugins name
 
 = 4.1 - 2025-10-02 =
 * [FIX] The update checker on the plugin settings page was not working (PRO add-on)
