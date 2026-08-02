@@ -1,0 +1,16 @@
+# Operative system files
+*.DS_Store
+__MACOSX
+
+# Tooling files
+.git/*
+.github/*
+.svn/*
+.distignore
+.gitignore
+.phpcs.xml.dist
+
+# Local ZIP creation tool
+createzip.command
+
+# Other files specific to the plugin
