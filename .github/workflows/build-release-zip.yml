@@ -34,4 +34,4 @@ jobs:
         name: ${{ github.ref_name }}
         draft: false
         prerelease: ${{ contains(github.ref_name, '-') }}
-        files: woo-multicaixa.zip
+        files: ${{ env.SLUG }}.zip
