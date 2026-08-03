@@ -125,13 +125,13 @@ You can report any security bugs found in the source code of this plugin through
 == Changelog ==
 
 = 4.2 - 2026-08-03 =
+* [NEW] Technical support and Terms and conditions links added next to the license key (PRO add-on)
+* [NEW] The license status now shows a distinct "Expired" state instead of just Valid/Invalid (PRO add-on)
 * [FIX] Redirect to the plugin's settings page after activation
 * [FIX] License validation could silently break on WP-CLI or behind some reverse proxies (PRO add-on)
 * [FIX] Undefined variable notice when checking if the Multicaixa reference value had changed on the order screen (PRO add-on)
 * [FIX] The order status AJAX fallback response returned an "expirde" key instead of "expired" (PRO add-on)
 * [FIX] The technical support link was not properly escaped (PRO add-on)
-* [NEW] Technical support and Terms and conditions links added next to the license key (PRO add-on)
-* [NEW] The license status now shows a distinct "Expired" state instead of just Valid/Invalid (PRO add-on)
 * [DEV] Tested with WordPress 7.1 and WooCommerce 11.0.0-rc.3
 
 = 4.1.1 - 2026-08-02 =
