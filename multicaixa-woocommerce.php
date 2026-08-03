@@ -3,16 +3,16 @@
  * Plugin Name:          Payment Multicaixa (ProxyPay gateway) for WooCommerce
  * Plugin URI:           https://www.webdados.pt/wordpress/plugins/multicaixa-gateway-proxypay-para-woocommerce-wordpress/
  * Description:          This plugin allows customers with an Angolan bank account to pay WooCommerce orders in Kwanzas using Multicaixa (Pagamentos por Referência), through ProxyPay’s payment gateway.
- * Version:              4.1.1
+ * Version:              4.2
  * Author:               Naked Cat Plugins (by Webdados)
  * Author URI:           https://nakedcatplugins.com
  * Text Domain:          woo-multicaixa
  * Domain Path:          /lang
  * Requires at least:    5.8
- * Tested up to:         6.8
+ * Tested up to:         7.1
  * Requires PHP:         7.2
  * WC requires at least: 7.1
- * WC tested up to:      10.2
+ * WC tested up to:      11.0
  * Requires Plugins:     woocommerce
  **/
 
@@ -91,6 +91,36 @@ function admin_notices_multicaixa_woocommerce_not_active() {
 	</div>
 	<?php
 }
+
+/**
+ * On activation, set a transient so we can redirect to the settings page.
+ */
+function multicaixa_activation_redirect() {
+	set_transient( 'multicaixa_activation_redirect_' . get_current_user_id(), true, 30 );
+}
+register_activation_hook( __FILE__, 'multicaixa_activation_redirect' );
+
+/**
+ * Redirect to the settings page after single (non-bulk) activation.
+ */
+add_action(
+	'admin_init',
+	function () {
+		// Do not redirect during AJAX requests.
+		if ( wp_doing_ajax() ) {
+			return;
+		}
+		$transient_key = 'multicaixa_activation_redirect_' . get_current_user_id();
+		if ( get_transient( $transient_key ) ) {
+			delete_transient( $transient_key );
+			// Do not redirect on bulk activation.
+			if ( ! isset( $_GET['activate-multi'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				wp_safe_redirect( admin_url( 'admin.php?page=wc-settings&tab=checkout&section=multicaixa_proxypay' ) );
+				exit;
+			}
+		}
+	}
+);
 
 /* HPOS Compatible - beta */
 add_action(

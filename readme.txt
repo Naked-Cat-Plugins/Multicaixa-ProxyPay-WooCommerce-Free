@@ -2,9 +2,9 @@
 Contributors: nakedcatplugins, webdados
 Tags: angola, ecommerce, emis, proxypay, mobile
 Requires at least: 5.8
-Tested up to: 6.8
+Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 4.1.1
+Stable tag: 4.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,7 +48,7 @@ This plugin works with the [ProxyPay](https://proxypay.co.ao/) gateway, and a co
 	* Payment method can be deactivated if the client doesn’t have an Angolan address;
 	* ProxyPay Sandbox support;
 
-[Know more and get the plugin PRO add-on now](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
+[Know more and get the plugin PRO add-on now](https://wbds.pt/We6).
 
 = Other (premium) plugins =
 
@@ -65,7 +65,7 @@ Do you already know our other WooCommerce (premium) plugins?
 * Use the included automatic install feature on your WordPress admin panel and search for “Multicaixa WooCommerce ProxyPay”.
 * Go to WooCoomerce > Settings > Payments > Pagamento por Referência no Multicaixa and fill in the details provided by ProxyPay and your bank to activate this payment method. A contract with TimeBoxed (the company behind ProxyPay) and a bank is mandatory.
 * Start receiving payments :-)
-* Optionally, [buy and download the PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/) to set up Multicaixa Express payment and get other extended features
+* Optionally, [buy and download the PRO add-on](https://wbds.pt/We6) to set up Multicaixa Express payment and get other extended features
 
 == Frequently Asked Questions ==
 
@@ -75,7 +75,7 @@ You have to sign a contract with ProxyPay and an Angolan bank to activate this s
 
 = Can I get Multicaixa Express mobile payments? =
 
-Yes, with the [PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/)
+Yes, with the [PRO add-on](https://wbds.pt/We6)
 
 = [WPML] My website is multilingual. Will I be able to use this plugin? =
 
@@ -87,11 +87,11 @@ Go to WPML > String Translation > Search and translate the `multicaixa_proxypay_
 
 = [SMS] How to include the Multicaixa payment instructions in the SMS sent by “WooCommerce - APG SMS Notifications”, “Twilio SMS Notifications” or “YITH WooCommerce SMS Notification”? =
 
-You’ll need the [plugin PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
+You’ll need the [plugin PRO add-on](https://wbds.pt/We6).
 
 = [SMS] How to trigger the ProxyPay SMS system? =
 
-You’ll need the [plugin PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
+You’ll need the [plugin PRO add-on](https://wbds.pt/We6).
 
 = [Advanced] The order is set “On Hold”, can I make it “Pending” by default? =
 
@@ -105,7 +105,7 @@ You can use the `multicaixa_proxypay_email_instructions_payment_received_send` f
 
 = [Advanced] How can I use the plugin with the ProxyPay sandbox, for tests? =
 
-You should return true to the `multicaixa_proxypay_test_mode` filter, or use the [plugin PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/) to activate the test mode with a simple checkbox.
+You should return true to the `multicaixa_proxypay_test_mode` filter, or use the [plugin PRO add-on](https://wbds.pt/We6) to activate the test mode with a simple checkbox.
 
 = Can I contribute with a translation? =
 
@@ -115,7 +115,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/woo-
 
 Development and (premium) support is provided by [Naked Cat Plugins (by Webdados)](https://nakedcatplugins.com/).
 We do not provide free support for this free plugin, but you can submit bug reports here at WordPress.org
-You’ll get included support if you buy the [plugin PRO add-on](https://nakedcatplugins.com/product/payment-multicaixa-proxypay-gateway-for-woocommerce-pro-add-on/).
+You’ll get included support if you buy the [plugin PRO add-on](https://wbds.pt/We6).
 For premium support or custom developments, you should contact [Webdados](https://www.webdados.pt/contactos/). Charges may (and most certainly will) apply.
 
 = Where do I report security vulnerabilities found in this plugin? =  
@@ -124,9 +124,20 @@ You can report any security bugs found in the source code of this plugin through
 
 == Changelog ==
 
+= 4.2 - 2026-08-03 =
+* [FIX] Redirect to the plugin's settings page after activation
+* [FIX] License validation could silently break on WP-CLI or behind some reverse proxies (PRO add-on)
+* [FIX] Undefined variable notice when checking if the Multicaixa reference value had changed on the order screen (PRO add-on)
+* [FIX] The order status AJAX fallback response returned an "expirde" key instead of "expired" (PRO add-on)
+* [FIX] The technical support link was not properly escaped (PRO add-on)
+* [NEW] Technical support and Terms and conditions links added next to the license key (PRO add-on)
+* [NEW] The license status now shows a distinct "Expired" state instead of just Valid/Invalid (PRO add-on)
+* [DEV] Tested with WordPress 7.1 and WooCommerce 11.0.0-rc.3
+
 = 4.1.1 - 2026-08-02 =
-* [FIX] Fatal error when a customer note was added to an order with a different WPML language than the site's default
 * [TWEAK] Support sidebar link now refers to Naked Cat Plugins instead of the old PT Woo Plugins name
+* [FIX] Fatal error when a customer note was added to an order with a different WPML language than the site's default
+* [DEV] Implement build and release GitHub actions
 
 = 4.1 - 2025-10-02 =
 * [FIX] The update checker on the plugin settings page was not working (PRO add-on)
