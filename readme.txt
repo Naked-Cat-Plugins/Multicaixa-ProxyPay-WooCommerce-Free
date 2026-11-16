@@ -24,14 +24,14 @@ This plugin works with the [ProxyPay](https://proxypay.co.ao/) gateway, and a co
 
 * Generates a Multicaixa Reference for simple payment on the Angolan ATM network or Home Banking service;
 * 24 hours reference validity;
-* Compatible with High-Performance Order Storage for WooCommerce
-* Compatible with WooCommerce Blocks checkout
+* Compatible with High-Performance Order Storage for WooCommerce;
+* Compatible with the WooCommerce block-based checkout;
 * WPML tested and compatible (for multilingual shops);
 * Polylang tested;
 
 = PRO add-on features: =
 
-* NEW: Multicaixa Express mobile payment:
+* Multicaixa Express mobile payment:
 	* Accept mobile payments with MCX Express, with the customer’s mobile phone number;
 	* Both for the classic and blocks checkout;
 * Multicaixa Reference payment:
@@ -48,7 +48,7 @@ This plugin works with the [ProxyPay](https://proxypay.co.ao/) gateway, and a co
 	* Payment method can be deactivated if the client doesn’t have an Angolan address;
 	* ProxyPay Sandbox support;
 
-[Know more and get the plugin PRO add-on now](https://wbds.pt/We6).
+[Learn more and get the plugin PRO add-on now](https://wbds.pt/We6).
 
 = Other (premium) plugins =
 
@@ -63,7 +63,7 @@ Do you already know our other WooCommerce (premium) plugins?
 == Installation ==
 
 * Use the included automatic install feature on your WordPress admin panel and search for “Multicaixa WooCommerce ProxyPay”.
-* Go to WooCoomerce > Settings > Payments > Pagamento por Referência no Multicaixa and fill in the details provided by ProxyPay and your bank to activate this payment method. A contract with TimeBoxed (the company behind ProxyPay) and a bank is mandatory.
+* Go to WooCommerce > Settings > Payments > Pagamento por Referência no Multicaixa and fill in the details provided by ProxyPay and your bank to activate this payment method. A contract with TimeBoxed (the company behind ProxyPay) and a bank is mandatory.
 * Start receiving payments :-)
 * Optionally, [buy and download the PRO add-on](https://wbds.pt/We6) to set up Multicaixa Express payment and get other extended features
 
@@ -71,7 +71,7 @@ Do you already know our other WooCommerce (premium) plugins?
 
 = Can I start receiving payments right away? =
 
-You have to sign a contract with ProxyPay and an Angolan bank to activate this service. Go to [https://proxypay.co.ao/](https://proxypay.co.ao/) for more information. They can help you out with all the subscription process with them and the bank.
+You have to sign a contract with ProxyPay and an Angolan bank to activate this service. Go to [https://proxypay.co.ao/](https://proxypay.co.ao/) for more information. They can help you out with the whole subscription process with them and the bank.
 
 = Can I get Multicaixa Express mobile payments? =
 
@@ -83,7 +83,7 @@ Yes. This plugin is WPML compatible. You will need the WPML and WPML String Tran
 
 = [WPML] How can I translate the payment method title and description the client sees in the checkout page to secondary languages? =
 
-Go to WPML > String Translation > Search and translate the `multicaixa_proxypay_gateway_title` and `multicaixa_proxypay_gateway_description`, strings in the `woocommerce` domain. Don’t forget to check the “Translation is complete” checkbox and click “Save”. You should also translate the “Extra instructions” strings by searching the `multicaixa_proxypay_extra_instructions` string on the `woo_multicaixa`.
+Go to WPML > String Translation > Search and translate the `multicaixa_proxypay_gateway_title` and `multicaixa_proxypay_gateway_description`, strings in the `woocommerce` domain. Don’t forget to check the “Translation is complete” checkbox and click “Save”. You should also translate the “Extra instructions” strings by searching the `multicaixa_proxypay_extra_instructions` string in the `multicaixa_proxypay` domain.
 
 = [SMS] How to include the Multicaixa payment instructions in the SMS sent by “WooCommerce - APG SMS Notifications”, “Twilio SMS Notifications” or “YITH WooCommerce SMS Notification”? =
 
@@ -95,12 +95,12 @@ You’ll need the [plugin PRO add-on](https://wbds.pt/We6).
 
 = [Advanced] The order is set “On Hold”, can I make it “Pending” by default? =
 
-I don’t know why on earth you would want to do this, but… yes, you can. Just return `false` to the `multicaixa_proxypay_set_on_hold` filter.
+You shouldn’t, but you can: return `false` to the `multicaixa_proxypay_set_on_hold` filter.
 Be advised that no “new order” email, with payment instructions, will be sent to the client unless you use some plugin or custom code to force it.
 
 = [Advanced] Can I prevent the plugin from adding the payment instructions and/or the payment received message to emails? =
 
-You can use the `multicaixa_proxypay_email_instructions_pending_send` filter: return false and the payment instructions won’t be included in the “new order” email – we do not recommend you do it, though.
+You can use the `multicaixa_proxypay_email_instructions_pending_send` filter: return false and the payment instructions won’t be included in the “new order” email. We do not recommend you do it, though.
 You can use the `multicaixa_proxypay_email_instructions_payment_received_send` filter: return false and the payment received message won’t be included in the “processing” email.
 
 = [Advanced] How can I use the plugin with the ProxyPay sandbox, for tests? =
@@ -113,10 +113,10 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/woo-
 
 = I need technical support. Who should I contact, ProxyPay or Naked Cat Plugins (by Webdados)? =
 
-Development and (premium) support is provided by [Naked Cat Plugins (by Webdados)](https://nakedcatplugins.com/).
-We do not provide free support for this free plugin, but you can submit bug reports here at WordPress.org
+Development and (premium) support are provided by [Naked Cat Plugins (by Webdados)](https://nakedcatplugins.com/).
+We do not provide free support for this free plugin, but you can submit bug reports here at WordPress.org.
 You’ll get included support if you buy the [plugin PRO add-on](https://wbds.pt/We6).
-For premium support or custom developments, you should contact [Webdados](https://www.webdados.pt/contactos/). Charges may (and most certainly will) apply.
+For premium support or custom developments, you should contact [Webdados](https://www.webdados.pt/contactos/). Charges apply.
 
 = Where do I report security vulnerabilities found in this plugin? =  
  
