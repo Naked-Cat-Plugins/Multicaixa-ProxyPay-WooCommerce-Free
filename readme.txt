@@ -85,10 +85,6 @@ Yes. This plugin is WPML compatible. You will need the WPML and WPML String Tran
 
 Go to WPML > String Translation > Search and translate the `multicaixa_proxypay_gateway_title` and `multicaixa_proxypay_gateway_description`, strings in the `woocommerce` domain. Don’t forget to check the “Translation is complete” checkbox and click “Save”. You should also translate the “Extra instructions” strings by searching the `multicaixa_proxypay_extra_instructions` string in the `multicaixa_proxypay` domain.
 
-= [SMS] How to include the Multicaixa payment instructions in the SMS sent by “WooCommerce - APG SMS Notifications”, “Twilio SMS Notifications” or “YITH WooCommerce SMS Notification”? =
-
-You’ll need the [plugin PRO add-on](https://wbds.pt/We6).
-
 = [SMS] How to trigger the ProxyPay SMS system? =
 
 You’ll need the [plugin PRO add-on](https://wbds.pt/We6).
