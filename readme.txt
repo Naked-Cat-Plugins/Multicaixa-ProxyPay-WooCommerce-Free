@@ -112,7 +112,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/woo-
 Development and (premium) support are provided by [Naked Cat Plugins (by Webdados)](https://nakedcatplugins.com/).
 We do not provide free support for this free plugin, but you can submit bug reports here at WordPress.org.
 You’ll get included support if you buy the [plugin PRO add-on](https://wbds.pt/We6).
-For premium support or custom developments, you should contact [Webdados](https://www.webdados.pt/contactos/). Charges apply.
+For premium support or custom developments, you should contact [Naked Cat Plugins](https://nakedcatplugins.com/product/custom-development/). Charges apply.
 
 = Where do I report security vulnerabilities found in this plugin? =  
  
